@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Login page</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+	type="text/css">
+</head>
+<body>
+	<div class="container my-4">
+		<hr>
+		<div id="loginbox" style="margin-top: 50px;"
+			class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<div class="panel-title">Login Page</div>
+				</div>
+				<div style="padding-top: 30px" class="panel-body">
+					<div th:if="${param.error}" class="alert alert-danger col-sm-12">Invalid username and password.</div>
+					<div th:if="${param.logout}" class="alert alert-danger col-sm-12">You have been logged out.</div>
+					<form th:action="@{/login}" method="post" class="form-horizontal">
+						<div style="margin-bottom: 25px" class="input-group">
+							<span class="input-group-addon"><i
+								class="glyphicon glyphicon-user"></i></span> <input type="text"
+								class="form-control" id="username" name="username"
+								autofocus="autofocus" placeholder="username" />
+						</div>
+						<div style="margin-bottom: 25px" class="input-group">
+							<span class="input-group-addon"><i
+								class="glyphicon glyphicon-lock"></i></span> <input type="password"
+								class="form-control" id="password" name="password" />
+						</div>
+						<div style="margin-top: 10px" class="form-group">
+							<div class="col-sm-12 controls">
+								<input type="submit" value="Log in" class="btn btn-success" />
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

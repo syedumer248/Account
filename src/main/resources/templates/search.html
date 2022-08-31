@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<title>Account Statement</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+	type="text/css">
+</head>
+<body>
+	<div class="container my-4">
+		<hr>
+		<div id="loginbox" style="margin-top: 50px;"
+			class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<div class="panel-title" th:inline="text">Welcome
+						[[${#httpServletRequest.remoteUser}]]</div>
+					<div style="padding-top: 30px" class="panel-body">
+						<div class="alert alert-danger col-sm-12" th:if="${error}">
+							<p th:utext="${error}"></p>
+						</div>
+						<form action="#" th:action="@{/accountStatement}"
+							th:object="${statementRequest}" method="post"
+							class="form-horizontal">
+							<div style="margin-bottom: 25px" class="input-group">
+								<span class="input-group-addon">Account Id</span> <input
+									type="text" class="form-control" th:field="*{accountId}"
+									id="accountId" placeholder="Account Id">
+							</div>
+							<div sec:authorize="hasRole('ADMIN')">
+								<div style="margin-bottom: 25px" class="input-group">
+									<span class="input-group-addon">Date Range</span> <input
+										type="text" class="form-control" th:field="*{fromDate}"
+										id="fromDate" placeholder="From"> - <input type="text"
+										class="form-control" th:field="*{toDate}" id="toDate"
+										placeholder="To">
+								</div>
+								<div style="margin-bottom: 25px" class="input-group">
+									<span class="input-group-addon">Amount Range</span> <input
+										type="text" th:field="*{fromAmount}" id="fromAmount"
+										class="form-control" placeholder="From"> - <input
+										type="text" th:field="*{toAmount}" class="form-control"
+										id="toAmount" placeholder="To">
+								</div>
+							</div>
+							<div style="margin-top: 10px" class="form-group">
+								<div class="col-sm-12 controls">
+									<input type="submit" value="Generate Statement"
+										class="btn btn-success">
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="form-group">
+						<div class="col-md-12 control">
+							<div
+								style="border-top: 1px solid #888; padding-top: 15px; font-size: 85%">
+								<div th:switch="${reponse}">
+									<h2 th:if="${reponse!=null and reponse.isEmpty()} ">No
+										statement found!</h2>
+									<div th:case="*"
+										th:if="${reponse!=null and !reponse.isEmpty()}">
+										<h2>Bank Statement</h2>
+										<table class="table table-bordered table-striped">
+											<thead>
+												<tr>
+													<th>Account No</th>
+													<th>Date</th>
+													<th>Amount</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="statement : ${reponse}">
+													<td th:text="${statement.accountNumber}"></td>
+													<td th:text="${statement.date}"></td>
+													<td th:text="${statement.amount}"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div style="margin-top: 10px" class="form-group">
+						<div class="col-sm-12 controls">
+							<form th:action="@{/logout}" method="post">
+								<input type="submit" value="Sign Out" class="btn  btn-primary"/>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
