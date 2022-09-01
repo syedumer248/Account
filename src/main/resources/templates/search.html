@@ -21,6 +21,9 @@
 						<div class="alert alert-danger col-sm-12" th:if="${error}">
 							<p th:utext="${error}"></p>
 						</div>
+						<div class="alert alert-danger col-sm-12" th:each="error : ${errors}">
+                            <p th:text="${error}"></p>
+                        </div>
 						<form action="#" th:action="@{/accountStatement}"
 							th:object="${statementRequest}" method="post"
 							class="form-horizontal">

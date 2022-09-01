@@ -13,6 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import com.nagarro.account.model.StatementRequest;
+import com.nagarro.account.util.Constant;
+
 import org.springframework.http.HttpStatus;
 
 @ControllerAdvice
@@ -46,8 +50,9 @@ public class ErrorController {
         for (ConstraintViolation<?> violation : exception.getConstraintViolations()) {
         	errors.add( violation.getMessage());
         }
+        model.addAttribute("statementRequest", new StatementRequest());
         model.addAttribute("errors", errors);
-        return "error";
+        return Constant.VIEW_ACCOUNT_STATEMENT;
     }
 
 }
