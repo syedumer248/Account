@@ -50,21 +50,21 @@ public class AccountStatementDaoImpl implements IAccountStatementDao {
 			}
 
 			if (!StringUtils.isEmpty(request.getFromDate())) {
-				sb.append(" And Format(dateField ,'yyyy-MM-dd')  >= Format( #" + request.getFromDate()
+				sb.append(" And Format(Replace([dateField],'.','-') ,'yyyy-MM-dd')  >= Format( #" + request.getFromDate()
 						+ "#,'yyyy-MM-dd')");
 				isQueryParameter = true;
 			}
 
 			if (!StringUtils.isEmpty(request.getToDate())) {
 				sb.append(
-						" And Format(dateField ,'yyyy-MM-dd')  <= Format( #" + request.getToDate() + "#,'yyyy-MM-dd')");
+						" And Format(Replace([dateField],'.','-') ,'yyyy-MM-dd')  <= Format( #" + request.getToDate() + "#,'yyyy-MM-dd')");
 				isQueryParameter = true;
 			}
 
 			if (!isQueryParameter) {
 				// Default 3 months statement
 				Date date = Date.valueOf(LocalDate.now().minus(3, ChronoUnit.MONTHS));
-				sb.append(" And Format(dateField ,'yyyy-MM-dd')  >= Format( #" + date + "#,'yyyy-MM-dd')");
+				sb.append(" And Format(Replace([dateField],'.','-') ,'yyyy-MM-dd')  >= Format( #" + date + "#,'yyyy-MM-dd')");
 			}
 			logger.info("Executing Query :" + sb);
 			
