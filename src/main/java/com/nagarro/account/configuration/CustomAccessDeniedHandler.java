@@ -13,15 +13,13 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
-	public static final Logger log= LoggerFactory.getLogger(CustomAccessDeniedHandler.class);
+	public static final Logger log = LoggerFactory.getLogger(CustomAccessDeniedHandler.class);
 
 	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException exc)
 			throws IOException, ServletException {
-
 		response.setStatus(HttpStatus.UNAUTHORIZED.value());
-		response.sendError(HttpStatus.UNAUTHORIZED.value(), "Access Denied");
-		response.sendRedirect("/error");
+		response.sendRedirect("/login?timeout");
 	}
 
 }
