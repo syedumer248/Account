@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -20,7 +21,7 @@ public class MvcSecurityConfig {
 		http
 			.authorizeHttpRequests((requests) -> requests
 				.anyRequest().authenticated()
-			)
+			).exceptionHandling().accessDeniedHandler(accessDeniedHandler()).and()
 			.formLogin((form) -> form
 				.loginPage("/login")
 				.defaultSuccessUrl("/search", true)
@@ -51,4 +52,10 @@ public class MvcSecurityConfig {
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
+    
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler(){
+        return new CustomAccessDeniedHandler();
+    }
+
 }

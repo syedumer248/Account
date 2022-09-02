@@ -15,6 +15,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.nagarro.account.dao.IAccountStatementDao;
@@ -61,7 +63,8 @@ public class AccountStatementDaoImpl implements IAccountStatementDao {
 				isQueryParameter = true;
 			}
 
-			if (!isQueryParameter) {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			if (!isQueryParameter && auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_USER"))) {
 				// Default 3 months statement
 				Date date = Date.valueOf(LocalDate.now().minus(3, ChronoUnit.MONTHS));
 				sb.append(" And Format(Replace([dateField],'.','-') ,'yyyy-MM-dd')  >= Format( #" + date + "#,'yyyy-MM-dd')");
